@@ -426,9 +426,9 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 24px 80px;
+  padding: 0 24px 60px;
   width: 100%;
-  max-width: 900px;
+  max-width: 960px;
 }
 
 .attention-divider {
@@ -436,7 +436,7 @@ main {
   max-width: 900px;
   height: 1px;
   background: var(--border);
-  margin-bottom: 64px;
+  margin-bottom: 48px;
 }
 
 .attention-title {
@@ -444,7 +444,7 @@ main {
   font-size: clamp(1.6rem, 4vw, 2.2rem);
   font-weight: 400;
   color: var(--text);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   text-align: center;
   letter-spacing: -0.02em;
 }
@@ -456,18 +456,40 @@ main {
   text-align: center;
   max-width: 480px;
   line-height: 1.6;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
+}
+
+.attention-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.tokens-area {
+  flex: 2;
+  min-width: 0;
+}
+
+.distribution-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--subtext);
+  opacity: 0.6;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 
 .attention-output {
+  min-height: 40px;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  justify-content: center;
-  width: 100%;
-  max-width: 820px;
-  min-height: 80px;
-  padding: 24px 0;
+  line-height: 2.2;
 }
 
 .attention-placeholder {
@@ -484,40 +506,47 @@ main {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  padding: 20px 22px;
-  min-width: 90px;
-  text-align: center;
+  border-radius: 50px;
+  padding: 6px 14px;
+  margin: 3px 0;
   cursor: default;
   opacity: 0;
-  transform: scale(0.92);
-  animation: attFadeIn 0.4s ease forwards;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transform: scale(0.9);
+  animation: attFadeIn 0.35s ease forwards;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s ease,
+              filter 0.25s ease,
+              opacity 0.25s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  vertical-align: middle;
 }
 
 .attention-block:hover {
   transform: scale(1.08);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  filter: brightness(1.15);
+}
+
+.attention-container.has-tokens:hover .attention-block:not(:hover) {
+  opacity: 0.4;
 }
 
 .attention-block .att-word {
-  font-family: var(--serif);
-  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
-  font-weight: 400;
-  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #FFFFFF;
   line-height: 1.2;
-  margin-bottom: 8px;
+  white-space: nowrap;
 }
 
 .attention-block .att-score {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.55);
-  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.02em;
+  margin-top: 2px;
 }
 
 @keyframes attFadeIn {
@@ -527,53 +556,71 @@ main {
   }
 }
 
+/* Attention Bar */
+.attention-bar {
+  margin-top: 24px;
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--border);
+  width: 100%;
+}
+
+.attention-bar-segment {
+  height: 100%;
+  transition: filter 0.2s ease;
+}
+
 /* Legend */
 .attention-legend {
-  margin-top: 48px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px 24px;
-  width: 100%;
-  max-width: 320px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  flex: 1;
+  flex-shrink: 0;
+  width: 280px;
+  background: #f5f5f5;
+  color: #222;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .legend-title {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 1.13rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--subtext);
-  margin-bottom: 14px;
+  letter-spacing: 0.15em;
+  color: #222;
+  margin-bottom: 12px;
   font-weight: 500;
 }
 
 .legend-bar {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .legend-item {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .legend-swatch {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: 4px;
   flex-shrink: 0;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .legend-item span {
-  font-size: 0.82rem;
-  color: var(--subtext);
+  font-size: 0.88rem;
+  color: #222;
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.6;
 }
 
 /* Footer */
@@ -657,20 +704,33 @@ footer .accent {
   }
 
   .attention-section {
-    padding: 0 24px 64px;
+    padding: 0 24px 60px;
   }
 
-  .attention-output {
-    gap: 12px;
+  .attention-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .attention-legend {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .attention-bar {
+    height: 6px;
   }
 
   .attention-block {
-    padding: 16px 18px;
-    min-width: 80px;
+    padding: 5px 12px;
   }
 
   .attention-block .att-word {
-    font-size: 1.2rem;
+    font-size: 0.88rem;
+  }
+
+  .attention-block .att-score {
+    font-size: 0.65rem;
   }
 }
 
@@ -682,5 +742,9 @@ footer .accent {
 
   .visualizer-section {
     max-width: 640px;
+  }
+
+  .attention-section {
+    max-width: 800px;
   }
 }

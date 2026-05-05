@@ -60,27 +60,33 @@
     <div class="attention-divider"></div>
     <h2 class="attention-title">Attention Visualization</h2>
     <p class="attention-explain">Each word is weighted by how much the model attends to it. Darker means more important context.</p>
-    <div id="attention-output" class="attention-output">
-      <p class="attention-placeholder">Enter text above to visualize attention</p>
-    </div>
-    <div class="attention-legend">
-      <div class="legend-title">Attention Scale</div>
-      <div class="legend-bar">
-        <div class="legend-item">
-          <div class="legend-swatch" style="background: #8B0000;"></div>
-          <span>Highest — important context words</span>
+    <div class="attention-container">
+      <div class="tokens-area">
+        <p class="distribution-label">Attention Distribution</p>
+        <div id="attention-output" class="attention-output">
+          <p class="attention-placeholder">Enter text above to visualize attention</p>
         </div>
-        <div class="legend-item">
-          <div class="legend-swatch" style="background: #FF6A00;"></div>
-          <span>High attention</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-swatch" style="background: #FFD84D;"></div>
-          <span>Moderate attention</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-swatch" style="background: #FFF3A3;"></div>
-          <span>Low — less important words</span>
+        <div id="attention-bar" class="attention-bar" style="display: none;"></div>
+      </div>
+      <div class="attention-legend">
+        <div class="legend-title">Attention Scale</div>
+        <div class="legend-bar">
+          <div class="legend-item">
+            <div class="legend-swatch" style="background: #5C1A1A;"></div>
+            <span>Highest — important context words</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background: #B22222;"></div>
+            <span>High attention</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background: #D4500A;"></div>
+            <span>Moderate attention</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background: #C8960C;"></div>
+            <span>Low — less important words</span>
+          </div>
         </div>
       </div>
     </div>

@@ -91,21 +91,29 @@ function processSharedInput(btn) {
 /* ---------- Attention Visualization ---------- */
 
 function getAttentionScores(tokens) {
-  const wordCounts = {};
-  tokens.forEach((t) => {
-    const lower = t.toLowerCase();
-    wordCounts[lower] = (wordCounts[lower] || 0) + 1;
-  });
+  const lowPriorityWords = [
+    "is", "am", "are", "was", "were",
+    "this", "that", "these", "those",
+    "the", "a", "an",
+    "in", "on", "at", "of", "to", "for", "by", "with"
+  ];
 
   let raw = tokens.map((t) => {
-    const lower = t.toLowerCase();
-    let score = 0.2 + Math.random() * 0.6;
+    let score = Math.random() * 0.2 + 0.4;
 
-    if (t.length > 4) score += 0.15;
-    if (wordCounts[lower] > 1) score += 0.1 * (wordCounts[lower] - 1);
-    if (t.length <= 3 && /^[a-z]+$/i.test(t)) score -= 0.15;
+    if (lowPriorityWords.includes(t.toLowerCase())) {
+      score *= 0.3;
+    }
 
-    return Math.max(0.05, score);
+    if (t.length > 5) {
+      score *= 1.3;
+    }
+
+    if (t.length <= 2) {
+      score *= 0.6;
+    }
+
+    return Math.max(0.02, score);
   });
 
   const total = raw.reduce((a, b) => a + b, 0);
@@ -115,10 +123,10 @@ function getAttentionScores(tokens) {
 function scoreToColor(score, maxScore) {
   const ratio = score / maxScore;
   const colors = [
-    { r: 255, g: 243, b: 163 },
-    { r: 255, g: 216, b: 77 },
-    { r: 255, g: 106, b: 0 },
-    { r: 139, g: 0, b: 0 },
+    { r: 200, g: 150, b: 12 },
+    { r: 212, g: 80, b: 10 },
+    { r: 178, g: 34, b: 34 },
+    { r: 92, g: 26, b: 26 },
   ];
 
   const segment = ratio * (colors.length - 1);
@@ -142,7 +150,10 @@ function showAttentionPlaceholder() {
 
 function renderAttention(tokens) {
   const output = document.getElementById("attention-output");
+  const barContainer = document.getElementById("attention-bar");
   output.innerHTML = "";
+  barContainer.innerHTML = "";
+  barContainer.style.display = "flex";
 
   const scores = getAttentionScores(tokens);
   const maxScore = Math.max(...scores);
@@ -150,7 +161,7 @@ function renderAttention(tokens) {
   tokens.forEach((token, i) => {
     const block = document.createElement("div");
     block.className = "attention-block";
-    block.style.animationDelay = `${i * 0.05}s`;
+    block.style.animationDelay = `${i * 0.04}s`;
     block.style.background = scoreToColor(scores[i], maxScore);
 
     const pct = Math.round(scores[i] * 100);
@@ -161,6 +172,28 @@ function renderAttention(tokens) {
     `;
     output.appendChild(block);
   });
+
+  const container = document.querySelector(".attention-container");
+  container.classList.add("has-tokens");
+
+  scores.forEach((score) => {
+    const segment = document.createElement("div");
+    segment.className = "attention-bar-segment";
+    segment.style.width = `${score * 100}%`;
+    segment.style.background = scoreToColor(score, maxScore);
+    barContainer.appendChild(segment);
+  });
+}
+
+function showAttentionPlaceholder() {
+  const output = document.getElementById("attention-output");
+  const barContainer = document.getElementById("attention-bar");
+  output.innerHTML = '<p class="attention-placeholder">Enter text above to visualize attention</p>';
+  barContainer.style.display = "none";
+  barContainer.innerHTML = "";
+
+  const container = document.querySelector(".attention-container");
+  container.classList.remove("has-tokens");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
