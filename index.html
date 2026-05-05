@@ -33,7 +33,7 @@
         <h3>Tokenization</h3>
         <p>Breaking language into its smallest meaningful units</p>
       </div>
-      <div class="feature-card" data-delay="1">
+      <div class="feature-card" data-delay="1" data-scroll-target="attention">
         <div class="card-accent"></div>
         <h3>Attention Heatmap</h3>
         <p>Weighing relevance across sequences of information</p>
@@ -53,6 +53,36 @@
     <div id="user-text-display" class="user-text-display" style="display: none;"></div>
     <div id="token-output" class="token-output">
       <p class="token-placeholder">Enter text above to begin</p>
+    </div>
+  </section>
+
+  <section id="attention" class="attention-section">
+    <div class="attention-divider"></div>
+    <h2 class="attention-title">Attention Visualization</h2>
+    <p class="attention-explain">Each word is weighted by how much the model attends to it. Darker means more important context.</p>
+    <div id="attention-output" class="attention-output">
+      <p class="attention-placeholder">Enter text above to visualize attention</p>
+    </div>
+    <div class="attention-legend">
+      <div class="legend-title">Attention Scale</div>
+      <div class="legend-bar">
+        <div class="legend-item">
+          <div class="legend-swatch" style="background: #8B0000;"></div>
+          <span>Highest — important context words</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background: #FF6A00;"></div>
+          <span>High attention</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background: #FFD84D;"></div>
+          <span>Moderate attention</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background: #FFF3A3;"></div>
+          <span>Low — less important words</span>
+        </div>
+      </div>
     </div>
   </section>
 

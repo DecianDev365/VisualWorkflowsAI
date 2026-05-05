@@ -75,6 +75,7 @@ function displayUserText(text) {
 function processSharedInput(btn) {
   if (!sharedText.trim()) {
     showPlaceholder();
+    showAttentionPlaceholder();
     document.getElementById("user-text-display").style.display = "none";
     if (btn) runButtonAnimation(btn);
     return;
@@ -84,6 +85,82 @@ function processSharedInput(btn) {
   displayUserText(sharedText);
   const tokens = tokenize(sharedText);
   renderTokens(tokens);
+  renderAttention(tokens);
+}
+
+/* ---------- Attention Visualization ---------- */
+
+function getAttentionScores(tokens) {
+  const wordCounts = {};
+  tokens.forEach((t) => {
+    const lower = t.toLowerCase();
+    wordCounts[lower] = (wordCounts[lower] || 0) + 1;
+  });
+
+  let raw = tokens.map((t) => {
+    const lower = t.toLowerCase();
+    let score = 0.2 + Math.random() * 0.6;
+
+    if (t.length > 4) score += 0.15;
+    if (wordCounts[lower] > 1) score += 0.1 * (wordCounts[lower] - 1);
+    if (t.length <= 3 && /^[a-z]+$/i.test(t)) score -= 0.15;
+
+    return Math.max(0.05, score);
+  });
+
+  const total = raw.reduce((a, b) => a + b, 0);
+  return raw.map((r) => r / total);
+}
+
+function scoreToColor(score, maxScore) {
+  const ratio = score / maxScore;
+  const colors = [
+    { r: 255, g: 243, b: 163 },
+    { r: 255, g: 216, b: 77 },
+    { r: 255, g: 106, b: 0 },
+    { r: 139, g: 0, b: 0 },
+  ];
+
+  const segment = ratio * (colors.length - 1);
+  const idx = Math.min(Math.floor(segment), colors.length - 2);
+  const t = segment - idx;
+
+  const c1 = colors[idx];
+  const c2 = colors[idx + 1];
+
+  const r = Math.round(c1.r + (c2.r - c1.r) * t);
+  const g = Math.round(c1.g + (c2.g - c1.g) * t);
+  const b = Math.round(c1.b + (c2.b - c1.b) * t);
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function showAttentionPlaceholder() {
+  const output = document.getElementById("attention-output");
+  output.innerHTML = '<p class="attention-placeholder">Enter text above to visualize attention</p>';
+}
+
+function renderAttention(tokens) {
+  const output = document.getElementById("attention-output");
+  output.innerHTML = "";
+
+  const scores = getAttentionScores(tokens);
+  const maxScore = Math.max(...scores);
+
+  tokens.forEach((token, i) => {
+    const block = document.createElement("div");
+    block.className = "attention-block";
+    block.style.animationDelay = `${i * 0.05}s`;
+    block.style.background = scoreToColor(scores[i], maxScore);
+
+    const pct = Math.round(scores[i] * 100);
+
+    block.innerHTML = `
+      <span class="att-word">${token}</span>
+      <span class="att-score">Attention: ${pct}%</span>
+    `;
+    output.appendChild(block);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
