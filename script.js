@@ -48,12 +48,16 @@ function showPlaceholder() {
 function runButtonAnimation(btn) {
   btn.textContent = "Done";
   btn.style.pointerEvents = "none";
-  btn.style.opacity = "0.6";
+  btn.style.background = "#2ECC71";
+  btn.style.borderColor = "#2ECC71";
+  btn.style.color = "#0D0D0D";
 
   setTimeout(() => {
     btn.textContent = "Run";
     btn.style.pointerEvents = "auto";
-    btn.style.opacity = "1";
+    btn.style.background = "transparent";
+    btn.style.borderColor = "";
+    btn.style.color = "";
   }, 1200);
 }
 
