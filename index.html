@@ -20,7 +20,7 @@
     </section>
 
     <section class="features">
-      <div class="feature-card" data-delay="0">
+      <div class="feature-card" data-delay="0" data-scroll-target="visualizer">
         <div class="card-accent"></div>
         <h3>Tokenization</h3>
         <p>Breaking language into its smallest meaningful units</p>
@@ -37,6 +37,17 @@
       </div>
     </section>
   </main>
+
+  <section id="visualizer" class="visualizer-section">
+    <div class="visualizer-divider"></div>
+    <h2 class="visualizer-title">Tokenization Visualizer</h2>
+    <p class="visualizer-explain">Text is split into tokens. Each token is mapped to a numerical ID, which is later processed by the model.</p>
+    <div class="visualizer-input-row">
+      <input type="text" id="token-input" class="token-input" placeholder="Type a sentence..." autocomplete="off" />
+      <button id="tokenize-btn" class="tokenize-btn">Tokenize</button>
+    </div>
+    <div id="token-output" class="token-output"></div>
+  </section>
 
   <footer>
     <div class="footer-line"></div>
