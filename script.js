@@ -1,3 +1,85 @@
+let sharedText = "";
+
+function tokenize(text) {
+  return text.match(/[\w']+|[.,!?]/g) || [];
+}
+
+function generateId() {
+  return Math.floor(Math.random() * 49901) + 100;
+}
+
+function generateEmbedding() {
+  const length = Math.floor(Math.random() * 3) + 4;
+  const values = [];
+  for (let i = 0; i < length; i++) {
+    values.push((Math.random() * 2 - 1).toFixed(2));
+  }
+  return values;
+}
+
+function renderTokens(tokens) {
+  const tokenOutput = document.getElementById("token-output");
+  tokenOutput.innerHTML = "";
+
+  tokens.forEach((token, i) => {
+    const chip = document.createElement("div");
+    chip.className = "token-chip";
+    chip.style.animationDelay = `${i * 0.06}s`;
+
+    const vec = generateEmbedding();
+    const vecStr = `[${vec.join(", ")}]`;
+
+    chip.innerHTML = `
+      <span class="token-text">${token}</span>
+      <div class="token-meta">
+        <span class="token-id">ID: ${generateId()}</span>
+        <span class="token-vec" title="Vec: ${vecStr}">Vec: ${vecStr}</span>
+      </div>
+    `;
+    tokenOutput.appendChild(chip);
+  });
+}
+
+function showPlaceholder() {
+  const tokenOutput = document.getElementById("token-output");
+  tokenOutput.innerHTML = '<p class="token-placeholder">Enter text above to begin</p>';
+}
+
+function runButtonAnimation(btn) {
+  btn.textContent = "Done";
+  btn.style.pointerEvents = "none";
+  btn.style.opacity = "0.6";
+
+  setTimeout(() => {
+    btn.textContent = "Run";
+    btn.style.pointerEvents = "auto";
+    btn.style.opacity = "1";
+  }, 1200);
+}
+
+function displayUserText(text) {
+  const display = document.getElementById("user-text-display");
+  display.style.display = "block";
+  display.innerHTML = `
+    <div class="user-label">Input</div>
+    <div class="user-text">${text}</div>
+  `;
+}
+
+function processSharedInput(btn) {
+  if (!sharedText.trim()) {
+    showPlaceholder();
+    document.getElementById("user-text-display").style.display = "none";
+    if (btn) runButtonAnimation(btn);
+    return;
+  }
+
+  if (btn) runButtonAnimation(btn);
+  displayUserText(sharedText);
+  const tokens = tokenize(sharedText);
+  renderTokens(tokens);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".feature-card");
 
@@ -27,42 +109,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const tokenInput = document.getElementById("token-input");
-  const tokenizeBtn = document.getElementById("tokenize-btn");
-  const tokenOutput = document.getElementById("token-output");
+  const globalInput = document.getElementById("global-input");
+  const globalRunBtn = document.getElementById("global-run-btn");
 
-  function tokenize(text) {
-    return text.match(/[\w']+|[.,!?]/g) || [];
-  }
-
-  function generateId() {
-    return Math.floor(Math.random() * 49901) + 100;
-  }
-
-  function renderTokens(tokens) {
-    tokenOutput.innerHTML = "";
-    tokens.forEach((token, i) => {
-      const chip = document.createElement("div");
-      chip.className = "token-chip";
-      chip.style.animationDelay = `${i * 0.06}s`;
-      chip.innerHTML = `
-        <span class="token-text">${token}</span>
-        <span class="token-id">${generateId()}</span>
-      `;
-      tokenOutput.appendChild(chip);
-    });
-  }
-
-  tokenizeBtn.addEventListener("click", () => {
-    const text = tokenInput.value.trim();
-    if (!text) return;
-    const tokens = tokenize(text);
-    renderTokens(tokens);
+  globalRunBtn.addEventListener("click", () => {
+    sharedText = globalInput.value;
+    processSharedInput(globalRunBtn);
   });
 
-  tokenInput.addEventListener("keydown", (e) => {
+  globalInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      tokenizeBtn.click();
+      sharedText = globalInput.value;
+      processSharedInput(globalRunBtn);
     }
   });
 });

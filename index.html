@@ -19,6 +19,14 @@
       <p class="intro">Where language meets computation — building systems that understand, generate, and reshape text.</p>
     </section>
 
+    <section class="global-input">
+      <p class="global-input-title">Explore How AI Understands Your Text</p>
+      <div class="global-input-row">
+        <input type="text" id="global-input" class="global-input-field" placeholder="Type a sentence..." autocomplete="off" />
+        <button id="global-run-btn" class="global-run-btn">Run</button>
+      </div>
+    </section>
+
     <section class="features">
       <div class="feature-card" data-delay="0" data-scroll-target="visualizer">
         <div class="card-accent"></div>
@@ -42,11 +50,10 @@
     <div class="visualizer-divider"></div>
     <h2 class="visualizer-title">Tokenization Visualizer</h2>
     <p class="visualizer-explain">Text is split into tokens. Each token is mapped to a numerical ID, which is later processed by the model.</p>
-    <div class="visualizer-input-row">
-      <input type="text" id="token-input" class="token-input" placeholder="Type a sentence..." autocomplete="off" />
-      <button id="tokenize-btn" class="tokenize-btn">Tokenize</button>
+    <div id="user-text-display" class="user-text-display" style="display: none;"></div>
+    <div id="token-output" class="token-output">
+      <p class="token-placeholder">Enter text above to begin</p>
     </div>
-    <div id="token-output" class="token-output"></div>
   </section>
 
   <footer>
