@@ -48,16 +48,18 @@ function showPlaceholder() {
 function runButtonAnimation(btn) {
   btn.textContent = "Done";
   btn.style.pointerEvents = "none";
-  btn.style.background = "#2ECC71";
-  btn.style.borderColor = "#2ECC71";
-  btn.style.color = "#0D0D0D";
+  btn.style.background = "#27AE60";
+  btn.style.borderColor = "#27AE60";
+  btn.style.color = "#FFFFFF";
+  btn.style.boxShadow = "0 2px 8px rgba(39, 174, 96, 0.25)";
 
   setTimeout(() => {
     btn.textContent = "Run";
     btn.style.pointerEvents = "auto";
-    btn.style.background = "transparent";
+    btn.style.background = "";
     btn.style.borderColor = "";
     btn.style.color = "";
+    btn.style.boxShadow = "";
   }, 1200);
 }
 
